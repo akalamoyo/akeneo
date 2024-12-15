@@ -56,22 +56,23 @@ class ParticipantView(APIView):
 
 
 class DrawView(APIView):
-    """View to manage the Secret Santa draw."""
+    """View to create the Secret Santa draw."""
 
     def post(self, request):
-        participants = list(Participant.objects.all())
-        if len(participants) < 2:
+        participants = Participant.objects.all()
+        number_of_participants = participants.count()
+        if number_of_participants < 2:
             return Response(
                 {"error": "At least two participants are required"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        if len(participants) % 2 != 0:
+        if number_of_participants % 2 != 0:
             return Response(
                 {"error": "An even number of participants are required"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        remaining_participants = participants[:]
+        remaining_participants = list(participants)
         matched = {}
         unmatched = []
         result = {}
@@ -83,10 +84,7 @@ class DrawView(APIView):
                 for participant in remaining_participants
                 if participant != giver and participant not in giver.blacklist.all()
             ]
-            if not potential_receivers:
-                if not (giver_info in matched or giver_info in matched.values()):
-                    unmatched.append(giver_info)
-            else:
+            if potential_receivers:
                 receiver = random.choice(potential_receivers)
                 receiver_info = f"{receiver.name} ({receiver.email})"
                 if receiver_info not in matched:
@@ -94,6 +92,10 @@ class DrawView(APIView):
                 remaining_participants.remove(receiver)
                 if giver in remaining_participants:
                     remaining_participants.remove(giver)
+            else:
+                if giver_info not in matched and giver_info not in matched.values():
+                    unmatched.append(giver_info)
+
 
         result["matched"] = matched
         result["umatched"] = unmatched

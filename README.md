@@ -17,7 +17,9 @@ Akeneo's Secret Santa app is a gift exchange pairing tool. It allows you to matc
   pip install -r requirements.txt
 - Start the backend server
   ```bash
+  python manage.py migrate
   python manage.py runserver
+
 - Install frontend packages and run app
   ```bash
   cd frontend
@@ -36,7 +38,7 @@ For a lightweight app like this, I would deploy the backend on heroku and the fr
 | POST | /api/participant | To add a new participant |
 | PATCH | /api/participant | To update a participant (specifically, the blacklist info) |
 | GET | /api/draw | To start a new draw
-| POST | /api/history | To create a new cause |
+| POST | /api/history | To get history of latest 5 draws |
 
 ## Technologies Used
 * [VueJS](https://vuejs.org/) This is a free web application framework.
@@ -45,6 +47,7 @@ For a lightweight app like this, I would deploy the backend on heroku and the fr
 * [SQLite](https://www.sqlite.org/) A lightweight SQL database engine.
 
 ## How to improve the app
+- Use a more robust database like postgres.
 - Use react-query for better api management in frontend. Useful for invalidating queries so updates reflect in table immediately.
 - Would be nice to have authentication included but decided not to stress on that.
 - Configure emails notifications so users are notified once they are matched

@@ -35,7 +35,7 @@ const formatDraws = (relationships: { string: string }) => {
       >
     </BaseCard>
     <DataTable :value="data">
-      <Column field="relationships" header="Draws">
+      <Column field="relationships" header="Draws (top 5)">
         <template #body="slotProps">
           <span v-html="formatDraws(slotProps.data.relationships)" />
         </template>
