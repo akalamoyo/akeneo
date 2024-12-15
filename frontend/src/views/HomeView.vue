@@ -95,6 +95,11 @@ const multiSelectOptions = computed(() => {
 </script>
 
 <template>
+  <div
+    class="flex justify-center text-2xl text-white font-bold bg-gradient-to-r from-blue-600 via-green-600 to-red-600"
+  >
+    Akeneo's Secret Santa
+  </div>
   <div class="flex flex-row mt-12">
     <AddParticipantForm />
     <Divider layout="vertical" />
